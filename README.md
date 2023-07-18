@@ -2,12 +2,29 @@
 
 The Flask Script Executor is a web service that securely executes Python scripts and functions. It provides two routes to handle script execution and function invocation.
 
+## Features
+
+- Secure execution of Python script code
+- Detection of dangerous function calls and module imports
+- Installation of required modules using pip
+- Support for direct code execution or script file upload
+
+
 ## Routes
 ----------------
 
 ### `/scripts`
 
 This route accepts a POST request with a JSON payload containing the Python script code to execute. The script is executed securely by parsing the code using the `ast` module and checking for any dangerous operations. The result of the script execution is returned as a JSON response.
+
+- Request Body: JSON or form-data containing the script code.
+  - For JSON request, provide the script code in the `script` field.
+  - For form-data request, provide the script code in a file named `file`.
+- Response: JSON containing the result of script execution or any error encountered.
+
+To execute Python script code securely, you have two options:
+
+1. Direct Code Execution: Make a `POST` request to the /scripts endpoint with the script code in the request body as JSON.
 
 **Example Request:**
 
@@ -19,9 +36,6 @@ Content-Type: application/json
   "script": "print('Hello, World!')"
 }
 ```
-- Request Body: JSON or form-data containing the script code.
-  - For JSON request, provide the script code in the `script` field.
-  - For form-data request, provide the script code in a file named `file`.
 
 
 **Example Response:**
@@ -34,7 +48,19 @@ Content-Type: application/json
 }
 ```
 
-- Response: JSON containing the result of script execution or any error encountered.
+
+2. Script File Upload: Make a `POST` request to the `/scripts` endpoint with the script file attached as a form data field named file.
+
+**Example Request with cURL:**
+```
+curl -X POST -F "file=@script.py" http://localhost:5000/scripts
+```
+
+- In this command:
+
+  `-X POST` specifies the HTTP method as POST.
+  `-F "file=@script.py"` specifies the file to upload. Replace `script.py` with the path to your script file.
+  `http://localhost:5000/scripts` is the URL of the `/scripts` endpoint. Adjust the URL based on your deployment environment.
 
 
 ### `/params`
@@ -49,7 +75,7 @@ POST /params
 Content-Type: application/json
 
 {
-  "script": "def custom(name): return 'Hello, ' + name\ncustom",
+  "script": "def custom(name): return 'Hello, ' + name",
   "params": ["Alice"]
 }
 ```
