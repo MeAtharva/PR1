@@ -59,7 +59,9 @@ curl -X POST -F "file=@script.py" http://localhost:5000/scripts
 - In this command:
 
   `-X POST` specifies the HTTP method as POST.
+
   `-F "file=@script.py"` specifies the file to upload. Replace `script.py` with the path to your script file.
+  
   `http://localhost:5000/scripts` is the URL of the `/scripts` endpoint. Adjust the URL based on your deployment environment.
 
 
